@@ -1,5 +1,5 @@
 import { expect, test, describe } from 'bun:test'
-import { groupBy, max, min } from '../src'
+import { count, groupBy } from '../src'
 
 describe('iterable.util', () => {
   test('groupBy', () => {
@@ -56,13 +56,22 @@ describe('iterable.util', () => {
     })
   })
 
-  test('min', () => {
-    expect(min([1, 2, 3])).toBe(1)
-    expect(min([{ a: 1 }, { a: 2 }, { a: 3 }], (val) => val.a)).toEqual({ a: 1 })
-    expect(min('1234567890')).toBe('0')
-    expect(min(new Set([1, 2, 3]), (val) => val * 2)).toBe(1)
+  test('count', () => {
+    expect(count([1, 2, 3, 4, 5])).toEqual({ 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 })
+    expect(count([{ a: 1 }, { a: 1 }, { a: 2 }, { a: 2 }, { a: 3 }], (val) => val.a)).toEqual({
+      1: 2,
+      2: 2,
+      3: 1
+    })
+    expect(count('1234567890')).toEqual({ 1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 0: 1 })
     expect(
-      min(
+      count(new Set([{ value: 1 }, { value: 1 }, { value: 0 }, { value: 0 }]), (val) => val.value)
+    ).toEqual({
+      0: 2,
+      1: 2
+    })
+    expect(
+      count(
         new Map([
           ['a', 1],
           ['b', 2],
@@ -70,23 +79,6 @@ describe('iterable.util', () => {
         ]),
         (val) => val[1]
       )
-    ).toEqual(['a', 1])
-  })
-
-  test('max', () => {
-    expect(max([1, 2, 3])).toBe(3)
-    expect(max([{ a: 1 }, { a: 2 }, { a: 3 }], (val) => val.a)).toEqual({ a: 3 })
-    expect(max('1234567890')).toBe('9')
-    expect(max(new Set([1, 2, 3]), (val) => val * 2)).toBe(3)
-    expect(
-      max(
-        new Map([
-          ['a', 1],
-          ['b', 2],
-          ['c', 3]
-        ]),
-        (val) => val[1]
-      )
-    ).toEqual(['c', 3])
+    ).toEqual({ 1: 1, 2: 1, 3: 1 })
   })
 })

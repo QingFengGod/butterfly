@@ -204,75 +204,21 @@ export function isArrayBuffer(val: any): val is ArrayBuffer {
 }
 
 /**
- * 判断是否是Uint8Array
+ * 判断是否是TypedArray
  * @param val
  * @returns true | false
  */
-export function isUint8Array(val: any): val is Uint8Array {
-  return getType(val) === 'Uint8Array'
-}
-
-/**
- * 判断是否是Uint16Array
- * @param val
- * @returns true | false
- */
-export function isUint16Array(val: any): val is Uint16Array {
-  return getType(val) === 'Uint16Array'
-}
-
-/**
- * 判断是否是Uint32Array
- * @param val
- * @returns true | false
- */
-export function isUint32Array(val: any): val is Uint32Array {
-  return getType(val) === 'Uint32Array'
-}
-
-/**
- * 判断是否是Int8Array
- * @param val
- * @returns true | false
- */
-export function isInt8Array(val: any): val is Int8Array {
-  return getType(val) === 'Int8Array'
-}
-
-/**
- * 判断是否是Int16Array
- * @param val
- * @returns true | false
- */
-export function isInt16Array(val: any): val is Int16Array {
-  return getType(val) === 'Int16Array'
-}
-
-/**
- * 判断是否是Int32Array
- * @param val
- * @returns true | false
- */
-export function isInt32Array(val: any): val is Int32Array {
-  return getType(val) === 'Int32Array'
-}
-
-/**
- * 判断是否是Float32Array
- * @param val
- * @returns true | false
- */
-export function isFloat32Array(val: any): val is Float32Array {
-  return getType(val) === 'Float32Array'
-}
-
-/**
- * 判断是否是Float64Array
- * @param val
- * @returns true | false
- */
-export function isFloat64Array(val: any): val is Float64Array {
-  return getType(val) === 'Float64Array'
+export function isTypedArray(val: any): val is Uint8Array {
+  return [
+    'Uint8Array',
+    'Int8Array',
+    'Uint16Array',
+    'Int16Array',
+    'Uint32Array',
+    'Int32Array',
+    'Float32Array',
+    'Float64Array'
+  ].includes(getType(val))
 }
 
 /**

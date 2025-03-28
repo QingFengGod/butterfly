@@ -52,55 +52,27 @@ export function groupBy<
 }
 
 /**
- * 创建一个获取可迭代对象中的最小值或最大值的函数
- * @param initVal 初始值
- * @param compare 比较函数
- * @returns 获取最小值或最大值的函数
+ * 统计可迭代对象中每个元素出现的次数
+ * @param { T } iterable 可迭代对象
+ * @param { Fn<[PickIterable<T>], ObjectKey> } callback 获取统计的 key
+ * @returns { Record<ObjectKey, number> } 统计后的对象
+ * @example
  */
-const createMinormax = (initVal: number, compare: (item: number, initVal: number) => boolean) => {
-  return <T extends Iterable<any>>(
-    iterable: T,
-    getNum: Fn<[PickIterable<T>], number> = (val: any) => Number(val)
-  ): PickIterable<T> | null => {
-    assert(isIterable(iterable), 'iterable must be an iterable')
-    assert(isFunction(getNum), 'getNum must be a function')
-    let val = initVal,
-      finalItem = null
-    for (const item of iterable) {
-      const num = Number(getNum(item))
-      if (!Number.isNaN(num) && compare(num, val)) {
-        val = num
-        finalItem = item
-      }
-    }
-    return finalItem
+export function count<T extends Iterable<any>>(iterable: T, callback?: Fn<[PickIterable<T>], ObjectKey>) {
+  assert(isIterable(iterable), 'iterable must be an iterable')
+  if (isUndefined(callback)) {
+    callback = (val: any) => val
   }
+  assert(isFunction(callback), 'callback must be a function')
+  const result: Record<ObjectKey, number> = {}
+  for (const item of iterable) {
+    const key = callback(item)
+    if (isString(key) || isNumber(key) || isSymbol(key)) {
+      if (!result[key]) result[key] = 0
+      result[key]++
+    } else {
+      console.warn(`countKey must return a string, number or symbol, but got ${getType(key)}`)
+    }
+  }
+  return result
 }
-
-/**
- * 获取可迭代对象中的最小值
- * @param { T } iterable 可迭代对象
- * @param { Fn<[PickIterable<T>], number> } getNum 获取最小值的函数
- * @returns { PickIterable<T> } 最小的一项
- * @example
- * const min = min([1, 2, 3, 4, 5]) // 1
- * const min = min([{ a: 1 }, { a: 2 }, { a: 3 }], (val) => val.a) // { a: 1 }
- * const min = min('1234567890') // '0'
- * const min = min(new Set([1, 2, 3]), (val) => val * 2) // 1
- * const min = min(new Map([['a', 1], ['b', 2], ['c', 3]]), (val) => val[1]) // ['a', 1]
- */
-export const min = createMinormax(Infinity, (item, minVal) => item < minVal)
-
-/**
- * 获取可迭代对象中的最大值
- * @param { T } iterable 可迭代对象
- * @param { Fn<[PickIterable<T>], number> } getNum 获取最大值的函数
- * @returns { PickIterable<T> } 最大的一项
- * @example
- * const max = max([1, 2, 3, 4, 5]) // 5
- * const max = max([{ a: 1 }, { a: 2 }, { a: 3 }], (val) => val.a) // { a: 3 }
- * const max = max('1234567890') // '9'
- * const max = max(new Set([1, 2, 3]), (val) => val * 2) // 3
- * const max = max(new Map([['a', 1], ['b', 2], ['c', 3]]), (val) => val[1]) // ['c', 3]
- */
-export const max = createMinormax(-Infinity, (item, maxVal) => item > maxVal)

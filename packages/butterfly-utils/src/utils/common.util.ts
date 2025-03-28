@@ -1,5 +1,5 @@
 import { assert, assertFunction, assertNumber } from './assert.util'
-import { isBlob, isDate, isFunction, isMap, isObject, isRegExp, isSet } from './validator.util'
+import { isBlob, isDate, isFunction, isIterable, isMap, isObject, isRegExp, isSet } from './validator.util'
 
 type JsTypeMap = {
   Object: object
@@ -189,7 +189,7 @@ export function isEqual(val1: any, val2: any): boolean {
       if (!isEqual((val1 as any)[key], (val2 as any)[key])) return false
     }
   }
-  if (val1[Symbol.iterator] && val2[Symbol.iterator]) {
+  if (isIterable(val1) && isIterable(val2)) {
     const iterator1 = val1[Symbol.iterator]()
     const iterator2 = val2[Symbol.iterator]()
     while (true) {
