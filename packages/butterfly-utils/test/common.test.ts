@@ -28,8 +28,8 @@ type TestObj = {
   reg: RegExp
   symbol: symbol
   func: (val: number) => number
-  self?: TestObj
   blob: Blob
+  self?: TestObj
 }
 
 describe('common.util', () => {
@@ -95,7 +95,8 @@ describe('common.util', () => {
       symbol: Symbol('symbol'),
       [key]: 'key',
       func: (val: number) => val * 2,
-      blob: new Blob(['123'], { type: 'text/plain' })
+      blob: new Blob(['123'], { type: 'text/plain' }),
+      self: undefined
     }
     obj.self = obj
     const cloneObj = clone(obj)

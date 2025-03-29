@@ -116,13 +116,27 @@ export function getType(val: any): JsType {
 export function clone<T>(val: T, deep = true): T {
   const cache = new WeakMap()
   function _clone(data: any) {
-    if (data === null || typeof data !== 'object') {
-      return data
-    }
-    if (cache.has(data)) {
-      return cache.get(data)
-    }
-    if (isMap(data)) {
+    if (data === null || typeof data !== 'object') return data
+    if (cache.has(data)) return cache.get(data)
+    if (Array.isArray(data)) {
+      const clonedArr = new Array(data.length)
+      cache.set(data, clonedArr)
+      for (let i = 0; i < data.length; i++) {
+        clonedArr[i] = deep ? _clone(data[i]) : data[i]
+      }
+      return clonedArr
+    } else if (getType(data) === 'Object') {
+      const proto = Object.getPrototypeOf(data)
+      const clonedObj = Object.create(proto)
+      cache.set(data, clonedObj)
+      const keys = Reflect.ownKeys(data)
+      for (const key of keys) {
+        if (Object.prototype.hasOwnProperty.call(data, key)) {
+          clonedObj[key] = deep ? _clone(data[key]) : data[key]
+        }
+      }
+      return clonedObj
+    } else if (isMap(data)) {
       const clonedMap = new Map()
       data.forEach((value, key) => {
         clonedMap.set(key, deep ? _clone(value) : value)
@@ -141,6 +155,7 @@ export function clone<T>(val: T, deep = true): T {
     } else if (isBlob(data)) {
       return new Blob([data], { type: data.type })
     } else {
+      return data
       const clonedObj: any = Array.isArray(data) ? [] : {}
       cache.set(data, clonedObj)
       const keys = Reflect.ownKeys(data)
