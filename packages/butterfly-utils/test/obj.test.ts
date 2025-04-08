@@ -40,7 +40,6 @@ describe('obj.util', () => {
     }
 
     const [userGet, userSet] = createSafeObjGetterSetter(obj)
-
     expect(userGet('age')).toBe(15)
     expect(userGet('gender', '男')).toBe('男')
     expect(userGet('name', '默认值')).toBe('张三')
@@ -65,6 +64,17 @@ describe('obj.util', () => {
 
     userSet('role.permissions.0.code.0.data.0.name', '李四')
     expect<any>(userGet('role.permissions.0.code.0.data.0.name')).toBe(undefined)
+
+    const [userGet2] = createSafeObjGetterSetter({
+      a: {
+        b: {
+          c: 1,
+          d: [{ e: 1 }]
+        }
+      }
+    })
+    expect(userGet2('a.b.d.0.e')).toBe(1)
+    expect(userGet2('a.b.c')).toBe(1)
   })
 
   test('objOmit', () => {

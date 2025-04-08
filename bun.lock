@@ -11,17 +11,20 @@
         "globals": "^16.0.0",
         "prettier": "3.5.3",
         "prettier-eslint": "^16.3.0",
-        "ts-essentials": "^10.0.4",
         "typescript": "^5.8.2",
         "typescript-eslint": "^8.26.1",
       },
     },
-    "packages/butterfly-utils": {
-      "name": "@butterfly/utils",
+    "packages/butterflys-utils": {
+      "name": "@butterflys/utils",
+      "version": "1.0.0",
+      "devDependencies": {
+        "ts-essentials": "^10.0.4",
+      },
     },
   },
   "packages": {
-    "@butterfly/utils": ["@butterfly/utils@workspace:packages/butterfly-utils"],
+    "@butterflys/utils": ["@butterflys/utils@workspace:packages/butterflys-utils"],
 
     "@eslint-community/eslint-utils": ["@eslint-community/eslint-utils@4.5.0", "https://registry.npmmirror.com/@eslint-community/eslint-utils/-/eslint-utils-4.5.0.tgz", { "dependencies": { "eslint-visitor-keys": "^3.4.3" }, "peerDependencies": { "eslint": "^6.0.0 || ^7.0.0 || >=8.0.0" } }, "sha512-RoV8Xs9eNwiDvhv7M+xcL4PWyRyIXRY/FLp3buU4h1EYfdF7unWUy3dOjPqb3C7rMUewIcqwW850PgS8h1o1yg=="],
 

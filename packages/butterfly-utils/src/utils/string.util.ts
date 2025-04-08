@@ -1,3 +1,6 @@
+import { assertString } from './assert.util'
+import { isRegExp, isUndefined } from './validator.util'
+
 const UNICODE_WORD_REGEXP = /(\p{L})+/gu
 
 const ASCII_WORD_REGEXP = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g
@@ -66,6 +69,67 @@ export function strSplitWords(str: string, pattern?: RegExp) {
 }
 
 /**
+ * 将字符串中的指定位置或正则表达式匹配的位置转换为大写
+ * @param {string} str 需要转换的字符串
+ * @param {number[] | RegExp} [idxs] 需要转换的位置或正则表达式
+ * @returns {string} 转换后的字符串
+ * @example
+ */
+export function upperCase(str: string): string
+export function upperCase(str: string, idxs: number[]): string
+export function upperCase(str: string, pattern: RegExp): string
+export function upperCase(str: string, idxs?: number[] | RegExp) {
+  assertString(str, 'str')
+  if (isUndefined(idxs)) {
+    return str.toUpperCase()
+  }
+  if (Array.isArray(idxs)) {
+    const arr = str.split('')
+    for (let i = 0; i < idxs.length; i++) {
+      arr[idxs[i]] = arr[idxs[i]].toUpperCase()
+    }
+    return arr.join('')
+  }
+
+  if (isRegExp(idxs)) {
+    return str.replace(idxs, (match) => {
+      return match.toUpperCase()
+    })
+  }
+  return str
+}
+
+/**
+ * 将字符串中的指定位置或正则表达式匹配的位置转换为小写
+ * @param {string} str 需要转换的字符串
+ * @param {number[] | RegExp} [idxs] 需要转换的位置或正则表达式
+ * @returns {string} 转换后的字符串
+ * @example
+ */
+export function lowerCase(str: string): string
+export function lowerCase(str: string, idxs: number[]): string
+export function lowerCase(str: string, pattern: RegExp): string
+export function lowerCase(str: string, idxs?: number[] | RegExp) {
+  assertString(str, 'str')
+  if (isUndefined(idxs)) {
+    return str.toLowerCase()
+  }
+  if (Array.isArray(idxs)) {
+    const arr = str.split('')
+    for (let i = 0; i < idxs.length; i++) {
+      arr[idxs[i]] = arr[idxs[i]].toLowerCase()
+    }
+    return arr.join('')
+  }
+  if (isRegExp(idxs)) {
+    return str.replace(idxs, (match) => {
+      return match.toLowerCase()
+    })
+  }
+  return str
+}
+
+/**
  * 将字符串转换为驼峰命名
  * @param {string} str string 需要转换的字符串
  * @param {RegExp} reg RegExp 需要转换的正则表达式
@@ -74,11 +138,32 @@ export function strSplitWords(str: string, pattern?: RegExp) {
  * toCamelCase('my_name_is') // 'myNameIs'
  * toCamelCase('type', /[^- ]+/g) // 'type'
  */
-export function toCamelCase(str: string, pattern?: RegExp) {
-  str = String(str)
+export function toCamelCaseName(str: string, options: { pattern?: RegExp; firstUpperCase?: boolean } = {}) {
+  assertString(str, 'str')
+  const { pattern, firstUpperCase = false } = options
   return strSplitWords(str, pattern)
     .map((word, idx) => {
-      return idx === 0 ? word.toLowerCase() : word.charAt(0).toUpperCase() + word.slice(1)
+      if (idx === 0) {
+        return firstUpperCase ? upperCase(word, [0]) : lowerCase(word, [0])
+      }
+      return upperCase(word, [0])
     })
     .join('')
+}
+
+/**
+ * 将字符串转换为蛇形命名
+ * @param {string} str string 需要转换的字符串
+ * @param {RegExp} pattern RegExp 需要转换的正则表达式
+ * @returns {string} 转换后的字符串
+ * @example
+ * snakeCase('myNameIs') // 'my_name_is'
+ */
+export function toSnakeCaseName(str: string, options: { pattern?: RegExp; upperCase?: boolean } = {}) {
+  assertString(str, 'str')
+  const { pattern, upperCase: isToUpperCase = false } = options
+  const result = toCamelCaseName(str, { pattern }).replace(/([A-Z])/g, (match) => {
+    return `_${match}`
+  })
+  return isToUpperCase ? result.toUpperCase() : result.toLowerCase()
 }
