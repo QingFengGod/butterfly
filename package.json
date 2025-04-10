@@ -1,8 +1,10 @@
 {
-  "name": "@qing-feng/butterfly",
+  "private": true,
+  "packageManager": "bun@1.2.5",
   "version": "1.0.0",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "templates/*"
   ],
   "scripts": {
   },

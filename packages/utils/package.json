@@ -1,11 +1,14 @@
 {
-  "name": "@qing-feng/butterfly-utils",
+  "name": "@qingfeng-butterfly/utils",
   "description": "javascript/typescript util functions, zero dependency, any javascript runtime",
   "type": "module",
   "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "keywords": ["butterfly", "@butterfly/utils", "functions", "utils", "typescript", "javascript"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": ["qingfeng-butterfly", "functions library", "utils", "typescript", "javascript"],
   "repository": {
     "type": "git",
     "url": "https://github.com/QingFengGod/butterfly"
