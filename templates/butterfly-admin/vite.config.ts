@@ -6,6 +6,7 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, join(process.cwd(), 'env'), 'BF')
+
   return {
     envDir: join(process.cwd(), 'env'),
     envPrefix: 'BF',
@@ -25,12 +26,15 @@ export default defineConfig(({ mode }) => {
     server: {
       host: '0.0.0.0',
       proxy: {
-        [env.BF_PROXY_URL]: {
-          target: env.BF_API_BASEURL,
+        [env.BF_API_BASEURL]: {
+          target: env.BF_PROXY_URL,
           changeOrigin: true,
-          rewrite: (path) => path.replace(new RegExp(`^${env.BF_PROXY_URL}`), '')
+          rewrite: (path) => path.replace(new RegExp(`^${env.BF_API_BASEURL}`), '')
         }
       }
+    },
+    build: {
+      minify: false
     }
   }
 })

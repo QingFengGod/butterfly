@@ -1,5 +1,5 @@
 export default {
-  printWidth: 110, // 一行不得超过110字符
+  printWidth: 120, // 一行不得超过110字符
   tabWidth: 2, // 缩进 2 个空格
   useTabs: false, // 使用空格代替tab缩进
   semi: false, // 句末使用分号

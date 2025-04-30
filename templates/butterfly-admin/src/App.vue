@@ -1,7 +1,11 @@
 <template>
-  <config-provider :theme="configStore.themeMode">
-    <router-view />
-  </config-provider>
+  <ConfigProvider :theme="configStore.themeMode">
+    <RouterView v-slot:default="{ Component }">
+      <Transition :name="configStore.togglePageClassName">
+        <component :is="Component" />
+      </Transition>
+    </RouterView>
+  </ConfigProvider>
 </template>
 
 <script setup lang="ts">

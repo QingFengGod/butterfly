@@ -85,53 +85,6 @@ export function randomBoolean() {
   return Math.random() < 0.5
 }
 
-type RandomColorOptions = {
-  alpha?: boolean
-  type?: 'hex' | 'rgb'
-}
-/**
- * 生成一个随机颜色
- * @param {RandomColorOptions} options object 参数配置
- * @param {boolean} [options.alpha = false] boolean 是否包含透明度
- * @param {'hex' | 'rgb'} [options.type = 'hex'] string 颜色格式
- * @returns 随机颜色
- * @example
- * randomColor() // '#000000'
- * randomColor() // '#ffffff'
- * randomColor(['#000000', '#ffffff']) // '#000000'
- * randomColor({ alpha: true }) // 'rgba(0, 0, 0, 0.5)'
- * randomColor({ type: 'rgb' }) // 'rgb(0, 0, 0)'
- * randomColor({ type: 'rgb', alpha: true }) // 'rgba(0, 0, 0, 0.5)'
- */
-
-export function randomColor(colors: string[]): string
-export function randomColor(colors?: RandomColorOptions): string
-export function randomColor(options?: RandomColorOptions | string[]) {
-  if (Array.isArray(options)) {
-    return options[randomNumber({ min: 0, max: options.length })]
-  } else {
-    const { alpha = false, type = 'hex' } = options || {}
-    const r = randomNumber({ min: 0, max: 256 })
-    const g = randomNumber({ min: 0, max: 256 })
-    const b = randomNumber({ min: 0, max: 256 })
-    if (type === 'hex') {
-      if (alpha) {
-        const a = randomNumber({ min: 0, max: 256 }).toString(16).padStart(2, '0')
-        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}${a}`
-      } else {
-        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`
-      }
-    } else {
-      if (alpha) {
-        const a = randomNumber({ min: 0, max: 1, isFloat: true, decimals: 2 })
-        return `rgba(${r}, ${g}, ${b}, ${a})`
-      } else {
-        return `rgb(${r}, ${g}, ${b})`
-      }
-    }
-  }
-}
-
 /**
  * 从字符串、数组、Map 或 Set 中随机取一个值
  * @param {string | T[] | Map<any, T> | Set<T>} val 字符串、数组、Map 或 Set

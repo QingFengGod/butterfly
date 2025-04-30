@@ -2,18 +2,19 @@ import globals from 'globals'
 import pluginJs from '@eslint/js'
 import tsEslint from 'typescript-eslint'
 import eslintConfigPrettierRecommended from 'eslint-plugin-prettier/recommended'
+import { defineConfig } from 'eslint/config'
 
 /** @type {import('eslint').Linter.Config[]} */
-export default [
+export default defineConfig([
   {
     ignores: ['/node_modules/**', '**/dist/**', '**/public/**', '**/.vscode/**', '**/.idea/**']
   },
-  { files: ['**/*.{js,mjs,cjs,ts}'] },
   pluginJs.configs.recommended,
   ...tsEslint.configs.recommended,
   eslintConfigPrettierRecommended,
   {
-    name: 'buttefly-lint',
+    name: 'butterfly-ts-lint',
+    files: ['**/*.{js,mjs,cjs,ts}'],
     languageOptions: {
       globals: {
         ...globals.browser
@@ -39,4 +40,4 @@ export default [
       ]
     }
   }
-]
+])

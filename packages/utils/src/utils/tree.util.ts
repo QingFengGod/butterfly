@@ -50,12 +50,7 @@ type ListToTreeOptions<T extends Record<string, any>> = {
  * @param { ListToTreeOptions } options
  */
 export function listToTree<T extends Record<string, any>>(data: T[], options?: ListToTreeOptions<T>) {
-  const {
-    childrenKey = 'children',
-    primaryKey = 'id',
-    parentKey = 'parentId',
-    clone: isClone = false
-  } = options || {}
+  const { childrenKey = 'children', primaryKey = 'id', parentKey = 'parentId', clone: isClone = false } = options || {}
   const tree: T[] = []
   let dataList = isClone ? clone(data) : data
   const map: { [key: string]: T } = {}
@@ -81,12 +76,7 @@ export function listToTree<T extends Record<string, any>>(data: T[], options?: L
 }
 
 // 深度优先遍历树
-const depthEach = (
-  data: any[],
-  func: (item: any, level: number) => any,
-  childrenKey: keyof any,
-  level: number
-) => {
+const depthEach = (data: any[], func: (item: any, level: number) => any, childrenKey: keyof any, level: number) => {
   for (let i = 0; i < data.length; i++) {
     const newItem = func(data[i], level)
     isObject(newItem) && Object.assign(data[i], newItem)
@@ -97,12 +87,7 @@ const depthEach = (
 }
 
 // 广度优先遍历树
-const breadthEach = (
-  data: any[],
-  func: (item: any, level: number) => any,
-  childrenKey: keyof any,
-  level: number
-) => {
+const breadthEach = (data: any[], func: (item: any, level: number) => any, childrenKey: keyof any, level: number) => {
   let childrenList: any[] = []
   let i = 0
   while (i < data.length) {

@@ -1,5 +1,4 @@
-import { assert } from './assert.util'
-import { getType } from './common.util'
+import { getType, assert } from './common.util'
 import type { PickIterable } from './util.type'
 import { isFunction, isIterable, isNumber, isUndefined } from './validator.util'
 

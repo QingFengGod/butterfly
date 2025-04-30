@@ -222,3 +222,9 @@ export function isEqual(val1: any, val2: any): boolean {
   if (isRegExp(val1)) return val1.toString() === val2.toString()
   return true
 }
+
+export function assert(condition: boolean, message: string): asserts condition {
+  if (!condition) {
+    throw new Error('Assertion Error: ' + message)
+  }
+}

@@ -4,10 +4,9 @@ const buildLib = async (format: Array<'esm' | 'cjs'>) => {
       entrypoints: ['./src/index.ts'],
       outdir: './dist',
       format: f,
-      splitting: true,
-      minify: false,
+      minify: true,
       naming: f === 'esm' ? 'index.js' : 'index.cjs',
-      drop: ['console', 'debugger']
+      drop: ['debugger']
     })
       .then((res) => {
         res.outputs.forEach((output) => {

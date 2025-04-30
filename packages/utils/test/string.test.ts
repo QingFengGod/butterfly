@@ -34,6 +34,7 @@ describe('string.util', () => {
 
   test('toSnakeCaseName', () => {
     expect(toSnakeCaseName('myNameIs')).toBe('my_name_is')
+    expect(toSnakeCaseName('myNameIs1')).toBe('my_name_is_1')
     expect(toSnakeCaseName('myNameIs', { upperCase: true })).toBe('MY_NAME_IS')
   })
 })

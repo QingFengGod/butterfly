@@ -1,6 +1,5 @@
 import type { Fn } from './util.type'
-import { assert } from './assert.util'
-import { isEqual } from './common.util'
+import { isEqual, assert } from './common.util'
 import { isBaseType, isFunction, isUndefined } from './validator.util'
 
 /**

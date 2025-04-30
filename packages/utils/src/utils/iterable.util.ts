@@ -1,7 +1,6 @@
-import { assert } from 'ts-essentials'
 import type { Fn, ObjectKey, PickIterable } from './util.type'
 import { isFunction, isIterable, isNumber, isString, isSymbol, isUndefined } from './validator.util'
-import { getType } from './common.util'
+import { getType, assert } from './common.util'
 
 type GroupKeyReturn<
   T extends Iterable<any>,

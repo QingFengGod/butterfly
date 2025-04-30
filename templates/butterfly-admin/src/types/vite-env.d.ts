@@ -15,7 +15,7 @@ interface BFImportMetaEnv {
   // 文件访问地址前缀
   readonly BF_FILE_BASEURL: string
   // 是否启用权限
-  readonly BF_AUTH_ENABLED: boolean
+  readonly BF_PERMISSION_ENABLED: boolean
 }
 interface ImportMeta {
   readonly env: BFImportMetaEnv

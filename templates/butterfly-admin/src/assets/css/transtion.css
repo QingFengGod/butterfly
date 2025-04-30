@@ -1,0 +1,56 @@
+/* 页面切换动画 */
+.bf-offset-left-enter-active,
+.bf-offset-left-leave-active,
+.bf-offset-right-enter-active,
+.bf-offset-right-leave-active,
+.bf-offset-top-enter-active,
+.bf-offset-top-leave-active,
+.bf-offset-bottom-enter-active,
+.bf-offset-bottom-leave-active,
+.bf-fade-enter-active,
+.bf-fade-leave-active {
+	will-change: transform;
+	transition: all 0.3s ease;
+}
+.bf-offset-left-enter-from,
+.bf-offset-right-leave-to {
+	opacity: 0;
+	transform: translateX(10px);
+}
+.bf-offset-left-leave-to,
+.bf-offset-right-enter-from {
+	opacity: 0;
+	transform: translateX(-10px);
+}
+.bf-offset-top-enter-from,
+.bf-offset-bottom-leave-to {
+	opacity: 0;
+	transform: translateY(10px);
+}
+.bf-offset-top-leave-to,
+.bf-offset-bottom-enter-from { 
+	opacity: 0;
+	transform: translateY(-10px);
+}
+.bf-fade-enter-from {
+	opacity: 0;
+}
+.bf-fade-leave-to {
+	opacity: 0;
+}
+@keyframes scalePage {
+	0% {
+		opacity: 1;
+		transform: scale(1);
+	} 
+	100% {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+}
+.bf-scale-enter-active {
+	animation: scalePage 0.3s reverse;
+}
+.bf-scale-leave-active {
+	animation: scalePage 0.3s;
+}

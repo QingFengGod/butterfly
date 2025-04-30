@@ -1,6 +1,6 @@
 import type { ArrayLast, Fn, Includes, PickPromise, AsyncFn } from './util.type'
-import { assert, assertFunction, assertNumber } from './assert.util'
 import { isAsyncFunction, isFunction } from './validator.util'
+import { assert } from './common.util'
 
 type TryCatchWrapReturn<T extends Fn> =
   ReturnType<T> extends void | never
@@ -91,13 +91,9 @@ interface DebounceReturn<T extends DebounceFn> {
  * await sleep(500)
  * console.log(debouncedFn(4, 'call4'))  // 3
  */
-export function debounce<T extends DebounceFn>(
-  fn: T,
-  wait = 500,
-  options: DebounceOptions = {}
-): DebounceReturn<T> {
-  assertFunction(fn, 'fn')
-  assertNumber(wait, 'wait')
+export function debounce<T extends DebounceFn>(fn: T, wait = 500, options: DebounceOptions = {}): DebounceReturn<T> {
+  assert(typeof fn === 'function', 'fn must be a function')
+  assert(typeof wait === 'number', 'wait must be a number')
   let { invokeType = 'trailing', maxWait } = options
   assert(
     ['leading', 'trailing'].includes(invokeType),
@@ -179,8 +175,8 @@ export function throttle<T extends ThrottleFn>(
   interval = 300,
   options: ThrottleOptions = {}
 ): ThrottleReturn<T> {
-  assertFunction(fn, 'fn')
-  assertNumber(interval, 'interval')
+  assert(typeof fn === 'function', 'fn must be a function')
+  assert(typeof interval === 'number', 'interval must be a number')
   let { immediate = true } = options
   let lastArgs: any = null
   let lastThis: any = null
@@ -230,10 +226,7 @@ export type ComposeReturn<Fns extends Array<Fn>> =
  * console.log(fn(1, 2)) // '[a + b = 3]'
  */
 export function compose<Fn1 extends Fn>(fn1: Fn1): ComposeReturn<[Fn1]>
-export function compose<Fn1 extends Fn, Fn2 extends ComposeFn<Fn1>>(
-  fn1: Fn1,
-  fn2: Fn2
-): ComposeReturn<[Fn1, Fn2]>
+export function compose<Fn1 extends Fn, Fn2 extends ComposeFn<Fn1>>(fn1: Fn1, fn2: Fn2): ComposeReturn<[Fn1, Fn2]>
 export function compose<Fn1 extends Fn, Fn2 extends ComposeFn<Fn1>, Fn3 extends ComposeFn<Fn2>>(
   fn1: Fn1,
   fn2: Fn2,

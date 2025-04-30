@@ -1,11 +1,11 @@
 @import './reset.css';
+@import './transtion.css';
 
-/* :root {
- 
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
-:root.dark {
- 
-} */
 
 html {
   font-size: 10px;
@@ -21,4 +21,18 @@ body,
 
 body {
   font-size: 1.4rem;
+}
+
+::-webkit-scrollbar {
+  width: var(--bf-scrollbar-width); 
+  height: var(--bf-scrollbar-width); 
+  border-radius: var(--bf-scrollbar-width);
+}
+::-webkit-scrollbar-track {
+  border-radius: var(--bf-scrollbar-width);
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: var(--bf-scrollbar-width);
+  background-color: var(--bf-scrollbar-color);
 }

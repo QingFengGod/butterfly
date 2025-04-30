@@ -1,5 +1,5 @@
 import type { Fn } from './util.type'
-import { assert } from './assert.util'
+import { assert } from './common.util'
 import { isFunction, isString } from './validator.util'
 
 class EventStore<OnFn extends Fn = Fn, FnName extends string = string> {
@@ -66,6 +66,10 @@ export function createEventStore<Args extends any[]>() {
   return store
 }
 
+/**
+ * 创建一个事件总线
+ * @returns 事件总线
+ */
 export function createEventBus<EventNames extends string>() {
   return new EventStore<(...args: any[]) => void, EventNames>()
 }

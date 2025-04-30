@@ -1,5 +1,6 @@
 import type { DialogApi, MessageApi, NotificationApi } from 'naive-ui'
 import type { Paths, PathValue } from 'ts-essentials'
+import type { LocalStorage } from '@/common/utils'
 
 type Options = typeof import('./../../public/options.json')
 
@@ -26,11 +27,4 @@ declare global {
     $BF: BFGlobalApi
     $UI: UiApi
   }
-}
-
-declare module 'vue' {
-  // interface ComponentCustomProperties {
-  //   $BF: BFGlobalApi
-  //   $UI: UiApi
-  // }
 }

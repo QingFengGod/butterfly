@@ -1,9 +1,9 @@
-import { assertString } from './assert.util'
+import { assert } from './common.util'
 import { isRegExp, isUndefined } from './validator.util'
 
-const UNICODE_WORD_REGEXP = /(\p{L})+/gu
+export const UNICODE_WORD_REGEXP = /(\p{L})+/gu
 
-const ASCII_WORD_REGEXP = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g
+export const ASCII_WORD_REGEXP = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g
 /**
  * 判断字符串是否包含Unicode字符
  * @param {string} str 需要判断的字符串
@@ -79,7 +79,7 @@ export function upperCase(str: string): string
 export function upperCase(str: string, idxs: number[]): string
 export function upperCase(str: string, pattern: RegExp): string
 export function upperCase(str: string, idxs?: number[] | RegExp) {
-  assertString(str, 'str')
+  assert(typeof str === 'string', 'str must be a string')
   if (isUndefined(idxs)) {
     return str.toUpperCase()
   }
@@ -110,7 +110,7 @@ export function lowerCase(str: string): string
 export function lowerCase(str: string, idxs: number[]): string
 export function lowerCase(str: string, pattern: RegExp): string
 export function lowerCase(str: string, idxs?: number[] | RegExp) {
-  assertString(str, 'str')
+  assert(typeof str === 'string', 'str must be a string')
   if (isUndefined(idxs)) {
     return str.toLowerCase()
   }
@@ -136,10 +136,15 @@ export function lowerCase(str: string, idxs?: number[] | RegExp) {
  * @returns {string} 转换后的字符串
  * @example
  * toCamelCase('my_name_is') // 'myNameIs'
- * toCamelCase('type', /[^- ]+/g) // 'type'
+ * toCamelCaseName('my*name+is') // 'myNameIs'
  */
-export function toCamelCaseName(str: string, options: { pattern?: RegExp; firstUpperCase?: boolean } = {}) {
-  assertString(str, 'str')
+export function toCamelCaseName(
+  str: string,
+  options: { pattern?: RegExp; firstUpperCase?: boolean } = {
+    pattern: /(\p{L}|\d)+/gu
+  }
+) {
+  assert(typeof str === 'string', 'str')
   const { pattern, firstUpperCase = false } = options
   return strSplitWords(str, pattern)
     .map((word, idx) => {
@@ -159,10 +164,15 @@ export function toCamelCaseName(str: string, options: { pattern?: RegExp; firstU
  * @example
  * snakeCase('myNameIs') // 'my_name_is'
  */
-export function toSnakeCaseName(str: string, options: { pattern?: RegExp; upperCase?: boolean } = {}) {
-  assertString(str, 'str')
+export function toSnakeCaseName(
+  str: string,
+  options: { pattern?: RegExp; upperCase?: boolean } = {
+    pattern: /(\p{L}|\d)+/gu
+  }
+) {
+  assert(typeof str === 'string', 'str must be a string')
   const { pattern, upperCase: isToUpperCase = false } = options
-  const result = toCamelCaseName(str, { pattern }).replace(/([A-Z])/g, (match) => {
+  const result = toCamelCaseName(str, { pattern }).replace(/([A-Z]|[0-9])/g, (match) => {
     return `_${match}`
   })
   return isToUpperCase ? result.toUpperCase() : result.toLowerCase()

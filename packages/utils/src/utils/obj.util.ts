@@ -1,5 +1,5 @@
 import type { Paths, PathValue } from 'ts-essentials'
-import { assert, assertString } from './assert.util'
+import { assert } from './common.util'
 import { isNumber, isObject, isString, isSymbol } from './validator.util'
 
 type Getter<Obj extends Record<string, any>> = <
@@ -8,29 +8,22 @@ type Getter<Obj extends Record<string, any>> = <
 >(
   path: Key,
   defaultValue?: Val
-) => Val extends undefined
-  ? PathValue<Obj, Key> | undefined
-  : Exclude<PathValue<Obj, Key> | undefined, undefined>
+) => Val extends undefined ? PathValue<Obj, Key> | undefined : Exclude<PathValue<Obj, Key> | undefined, undefined>
 
-type Setter<Obj extends Record<string, any>> = <Key extends Paths<Obj>>(
-  path: Key,
-  value: PathValue<Obj, Key>
-) => void
+type Setter<Obj extends Record<string, any>> = <Key extends Paths<Obj>>(path: Key, value: PathValue<Obj, Key>) => void
 
 /**
  * 创建一个安全的对象属性访问器和设置器
  * @param { Object } obj 对象
  * @returns {[Getter<Obj>, Setter<Obj>]} 返回一个数组, 第一个元素是获取器, 第二个元素是设置器
  */
-export function createSafeObjGetterSetter<const Obj extends Record<string, any>>(
-  obj: Obj
-): [Getter<Obj>, Setter<Obj>] {
+export function createSafeObjGetterSetter<const Obj extends Record<string, any>>(obj: Obj): [Getter<Obj>, Setter<Obj>] {
   assert(isObject(obj), 'obj must be an object')
   const getter: Getter<Obj> = function <Key extends Paths<Obj>>(
     path: Key,
     defaultValue?: PathValue<Obj, Key>
   ): PathValue<Obj, Key> | undefined {
-    assertString(path, 'path must be a string')
+    assert(isString(path), 'path must be a string')
     const paths = path.split('.')
     let result: any = obj
     while (paths.length > 0) {
@@ -44,7 +37,7 @@ export function createSafeObjGetterSetter<const Obj extends Record<string, any>>
   } as Getter<Obj>
 
   const setter: Setter<Obj> = function <Key extends Paths<Obj>>(path: Key, value: PathValue<Obj, Key>) {
-    assertString(path, 'path must be a string')
+    assert(isString(path), 'path must be a string')
     const paths = path.split('.')
     const _set = (data: any) => {
       while (paths.length > 0) {
@@ -105,4 +98,38 @@ export function objPick<Obj extends Record<string, any>, Keys extends keyof Obj>
     }
   })
   return result
+}
+
+// export function mergeObj<
+//   Obj extends Record<string, any>,
+//   Obj2 extends Record<string, any>,
+//   Obj3 extends Record<string, any>,
+//   Obj4 extends Record<string, any>
+// >(obj: Obj, obj2: Obj2, obj3?: Obj3, obj4?: Obj4): Obj & Obj2 & Obj3 & Obj4 {
+//   // 检查传入的参数是否为对象
+//   if (!isObject(obj) || !isObject(obj2)) {
+//     throw new Error('val1 and val2 must be an object')
+//   }
+//   const result: any = { ...obj }
+//   for (const key in obj2) {
+//     if (deep && isObject(obj[key]) && isObject(obj2[key])) {
+//       result[key] = merge(obj[key], obj2[key], deep)
+//     } else {
+//       result[key] = obj2[key]
+//     }
+//   }
+//   return result
+// }
+
+/**
+ * 判断对象是否具有某个属性
+ * @param { Record<string, any> } obj 对象
+ * @param { string } key 属性名
+ * @returns { boolean } 是否具有该属性
+ */
+export function hasProperty<Obj extends Record<string, any>, Key extends string>(
+  obj: Obj,
+  key: Key
+): obj is Obj & { [k in Key]: any } {
+  return Object.prototype.hasOwnProperty.call(obj, key)
 }
